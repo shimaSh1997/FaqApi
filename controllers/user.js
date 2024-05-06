@@ -3,6 +3,7 @@ const Section = require("../models/section");
 // const Topic = require('../models/Topic');
 // const Question = require('../models/Question');
 // const Answer = require('../models/Answer');
+const verifyToken = require("../middleware/is-auth")
 
 // get sections
 exports.getSections = (req, res, next) => {
@@ -18,21 +19,18 @@ exports.getSections = (req, res, next) => {
 // Create a new section
 exports.postAddSection = (req, res, next) => {
   const title = req.body.title;
+  console.log("reqRole:",req.role)
+  // console.log('postSection:',req.headers['authorization'].split(' ')[1])
+  // const tokenBarear = req.headers['authorization'].split(' ')[1]
+  if(req.role !== 'admin'){
+    res.status(403).json({message:"Admin priviledge required"})
+  }
   Section.create({
     title: title,
   })
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       return res.status(201).json(result);
     })
     .catch((err) => res.status(500).json({ error: err.message }));
 };
-// exports.updateSection = (req, res, next) => {
-//   const sectionId = req.params.sectionId;
-//   const title = req.body.title;
-//   Section.update({ title, where: { id: sectionId } })
-//     .then((section) => {
-//       res.json(section);
-//     })
-//     .catch((err) => res.status(500).json({ error: err.message }));
-// };

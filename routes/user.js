@@ -7,11 +7,11 @@ const userController = require("../controllers/user")
 // const topicController = require("../controllers/topicController");
 // const questionController = require("../controllers/questionController");
 // const answerController = require("../controllers/answerController");
-const isAdmin = require("../middleware/is-auth").isAdmin;
+const verifyToken = require("../middleware/is-auth").verifyToken;
 
 // Admin routes for sections
-router.get("/sections", isAdmin, userController.getSections);
-router.post("/sections", isAdmin, userController.postAddSection);
+// router.get("/sections", isAdmin, userController.getSections);
+router.post("/sections", verifyToken, userController.postAddSection);
 // router.put('/sections/:sectionId', isAdmin, adminController.updateSection);
 // router.delete('/sections/:id', isAdmin, adminController.deleteSection);
 

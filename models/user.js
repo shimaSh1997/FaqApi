@@ -8,17 +8,17 @@ const User = sequelize.define("user", {
     allowNull: false,
     primaryKey: true,
   },
-  name: Sequelize.STRING,
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+  username: Sequelize.STRING,
+  // email: {
+  //   type: Sequelize.STRING,
+  //   allowNull: false,
+  // },
   password: {
     type: Sequelize.STRING,
     allowNull: false,
   },
   role: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.DataTypes.ENUM("admin", "user"),
     allowNull: false,
   },
 });
