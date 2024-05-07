@@ -1,14 +1,21 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const Section = sequelize.define('section', {
+const QA = sequelize.define('qa', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
-  section_name: Sequelize.STRING
+  question:{
+    type:Sequelize.TEXT,
+    allowNull:false
+  },
+  answer:{
+    type:Sequelize.TEXT,
+    allowNull:false
+  }
 });
 
-module.exports = Section;
+module.exports = QA;
