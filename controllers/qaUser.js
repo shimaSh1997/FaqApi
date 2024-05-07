@@ -40,7 +40,7 @@ exports.getViewCount = async (req, res, next) => {
   }
 };
 exports.getIsLike = async (req, res, next) => {
-  const qaId = req.params.id;
+  // const qaId = req.params.id;
   const isLike = req.body.isLike;
   try {
     const { count, rows } = await userQa.findAndCountAll({where:{isLike:true} });

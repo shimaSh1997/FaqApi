@@ -28,10 +28,12 @@ router.post("/qa", verifyToken, userController.postQuestionAnswer);
 router.put("/qa/:id", verifyToken, userController.updateQuestionAnswer);
 // router.delete('/qa/:id', verifyToken, userController.deleteQuestionAnswer);
 
-// User routes for questionAnswer for incrementing viewCount
+//routes for questionAnswer for incrementing viewCount
 router.post("/qaUser", qaController.postAddQaUser);
-router.get("/qa/:id", verifyToken, qaController.getViewCount);
+router.get("/qaView/:id", verifyToken, qaController.getViewCount);
 
+// routes for questionAnswer for show isLike or dislike 
+// router.get("/qalike/:id",verifyToken,qaController.getIsLike)
 // User routes for view Sections
 
 // User routes for view Topics
