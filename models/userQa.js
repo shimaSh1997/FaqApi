@@ -23,6 +23,11 @@ const userQa = sequelize.define("userQa", {
   isLike:{
     type: Sequelize.BOOLEAN,
     allowNull: true
+  },
+  viewCount:{
+    type:Sequelize.INTEGER,
+    allowNull:false,
+    defaultValue:0
   }
 });
 module.exports = userQa;

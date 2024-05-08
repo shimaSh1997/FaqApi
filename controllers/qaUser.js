@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const userQa = require("../models/userQa");
 const Qa = require("../models/qA");
+const QA = require("../models/qA");
 
 exports.postAddQaUser = async (req, res, next) => {
   const userId = req.body.userId;
@@ -49,7 +50,7 @@ exports.getAllFeatureOfQA = async (req, res, next) => {
     var { count, rows } = await userQa.findAndCountAll({ where: { qaId } });
     const viewCount = count;
     console.log("viewCount:", viewCount);
-
+    // toDO return maximum view count 
     res.status(201).json({
       message: { likeCount, dislikeCount, viewCount },
     });
@@ -57,3 +58,5 @@ exports.getAllFeatureOfQA = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// toDo increase view Count
