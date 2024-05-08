@@ -1,24 +1,13 @@
-// controllers/adminController.js
 const Section = require("../models/section");
 const Topic = require("../models/topic");
-// const Question = require('../models/Question');
-// const Answer = require('../models/Answer');
 const verifyToken = require("../middleware/is-auth");
 const sectionTopic = require("../models/sectionTopic.js");
 const qaTopic = require("../models/qaTopic");
 const QA = require("../models/qA.js");
+const { Op } = require("sequelize");
+const sequelize = require("../util/database.js");
 
-// get sections
-// exports.getSections = (req, res, next) => {
-//   Section.findAll()
-//     .then((sections) => {
-//       return res.json(sections);
-//     })
-//     .catch((err) => {
-//        res.status(500).json({ error: err.message });
-//     });
-// };
-
+// controllers/adminController.js
 // Create a new section
 exports.postAddSection = (req, res, next) => {
   const section_name = req.body.section_name;
@@ -154,3 +143,77 @@ exports.updateQuestionAnswer = async (req, res, next) => {
     res.status(500).json({ err: err.message });
   }
 };
+
+// controllers/userController.js
+// get sections
+exports.getSections = (req, res, next) => {
+  Section.findAll()
+    .then((sections) => {
+      return res.json(sections);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+};
+// get topics
+exports.getTopics = (req, res, next) => {
+  Topic.findAll()
+    .then((topics) => {
+      return res.json(topics);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+};
+
+// get question&answers
+exports.getQa = (req, res, next) => {
+  QA.findAll()
+    .then((qa) => {
+      return res.json(qa);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+};
+
+// search based on the question
+exports.searchBasedQuestion = (req, res, next) => {
+  const searchTerm = req.query;
+  console.log("searchTerm: ", `%${searchTerm.qa}%`);
+  QA.findAll({ where: { question: { [Op.iLike]: `%${searchTerm.qa}` } } })
+    .then((questionAnswer) => {
+      res.status(201).json({ message: questionAnswer });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+};
+exports.sortTopicBasedBySection = async (req, res, next) => {
+  try {
+    const order = req.query;
+    const where = order ? "DESC" : "ASC";
+    console.log("where:", where);
+    const data = await sequelize.query(
+      `SELECT * FROM topics LEFT JOIN sectiontopics ON topics.id = sectiontopics.topicId ORDER BY sectiontopics.sectionId ${where};`
+    );
+    console.log(data)
+    res.status(201).json({ message: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.sortQaBasedByTopics =  async (req, res, next) => {
+  try {
+    const order = req.query;
+    const where = order ? "DESC" : "ASC";
+    console.log("where:", where);
+    const data = await sequelize.query(
+      `SELECT * FROM qas LEFT JOIN qatopics ON qa.id = qatopics.qaId ORDER BY qatopics.topicId ${where};`
+    );
+    console.log(data)
+    res.status(201).json({ message: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}

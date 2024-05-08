@@ -29,23 +29,30 @@ exports.postAddQaUser = async (req, res, next) => {
   }
 };
 
-exports.getViewCount = async (req, res, next) => {
+exports.getAllFeatureOfQA = async (req, res, next) => {
   const qaId = req.params.id;
-  try {
-    const { count, rows } = await userQa.findAndCountAll({ where: { qaId } });
-    console.log("count:", count);
-    res.status(201).json({ message: "count view" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-exports.getIsLike = async (req, res, next) => {
-  // const qaId = req.params.id;
   const isLike = req.body.isLike;
+  console.log("isLike:::", isLike);
   try {
-    const { count, rows } = await userQa.findAndCountAll({where:{isLike:true} });
-    console.log("count:", count);
-    res.status(201).json({ message: "count view" });
+    var { count, rows } = await userQa.findAndCountAll({
+      where: { isLike: true, qaId: qaId },
+    });
+    const likeCount = count;
+    console.log("LikeCount", likeCount);
+
+    var { count, rows } = await userQa.findAndCountAll({
+      where: { isLike: false, qaId: qaId },
+    });
+    const dislikeCount = count;
+    console.log("dislikeCount:", dislikeCount);
+
+    var { count, rows } = await userQa.findAndCountAll({ where: { qaId } });
+    const viewCount = count;
+    console.log("viewCount:", viewCount);
+
+    res.status(201).json({
+      message: { likeCount, dislikeCount, viewCount },
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

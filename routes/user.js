@@ -30,16 +30,24 @@ router.put("/qa/:id", verifyToken, userController.updateQuestionAnswer);
 
 //routes for questionAnswer for incrementing viewCount
 router.post("/qaUser", qaController.postAddQaUser);
-router.get("/qaView/:id", verifyToken, qaController.getViewCount);
+// router.get("/qaView/:id", verifyToken, qaController.getViewCount);
 
-// routes for questionAnswer for show isLike or dislike 
-// router.get("/qalike/:id",verifyToken,qaController.getIsLike)
+// routes for questionAnswer for show isLike or dislike
+router.get("/qaLike/:id", verifyToken, qaController.getAllFeatureOfQA);
 // User routes for view Sections
-
+router.get("/viewSections", verifyToken, userController.getSections);
 // User routes for view Topics
+router.get("/viewTopics", verifyToken, userController.getTopics);
 
 // User routes for view Question and Answers
+router.get("/viewQa", verifyToken, userController.getQa);
 
+// User can be search based on question in here
+router.get("/searchQuestion",verifyToken,userController.searchBasedQuestion)
+
+// sortTopicBasedBySection
+router.get('/sortTopicBasedBySection',verifyToken,userController.sortTopicBasedBySection)
+router.get('/sortQaBasedByTopics',verifyToken,userController.sortQaBasedByTopics)
 // Admin routes for answers
 // router.post('/answers', isAdmin, adminController.createAnswer);
 // router.put('/answers/:id', isAdmin, adminController.updateAnswer);
